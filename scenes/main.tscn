@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://sfagcg10lgsy"]
+
+[ext_resource type="PackedScene" uid="uid://c52sy6rlyf1oi" path="res://scenes/player.tscn" id="1_o5qli"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o5qli"]
+
+[node name="Main" type="Node3D" unique_id=506126748]
+
+[node name="CharacterBody3D" parent="." unique_id=882968591 instance=ExtResource("1_o5qli")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="." unique_id=1679719229]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D" unique_id=135974723]
+shape = SubResource("WorldBoundaryShape3D_o5qli")
