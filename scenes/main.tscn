@@ -4,12 +4,22 @@
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o5qli"]
 
-[node name="Main" type="Node3D" unique_id=506126748]
+[sub_resource type="PlaneMesh" id="PlaneMesh_o5qli"]
 
-[node name="CharacterBody3D" parent="." unique_id=882968591 instance=ExtResource("1_o5qli")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="Main" type="Node3D" unique_id=506126748]
 
 [node name="AnimatableBody3D" type="AnimatableBody3D" parent="." unique_id=1679719229]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D" unique_id=135974723]
 shape = SubResource("WorldBoundaryShape3D_o5qli")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D/CollisionShape3D" unique_id=2020252428]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -0.9159041, 0)
+mesh = SubResource("PlaneMesh_o5qli")
+
+[node name="Player" parent="." unique_id=882968591 instance=ExtResource("1_o5qli")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=394740058]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3368955, 0)
+omni_range = 4096.0
+omni_attenuation = -0.35
