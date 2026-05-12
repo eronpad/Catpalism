@@ -19,7 +19,7 @@ mesh = SubResource("PlaneMesh_o5qli")
 
 [node name="Player" parent="." unique_id=882968591 instance=ExtResource("1_o5qli")]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=394740058]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3368955, 0)
-omni_range = 4096.0
-omni_attenuation = -0.35
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=234393315]
+light_indirect_energy = 1.185
+light_specular = 1.698
+sky_mode = 1
