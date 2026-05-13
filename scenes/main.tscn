@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://sfagcg10lgsy"]
 
 [ext_resource type="Script" uid="uid://catb58iklpjas" path="res://scenes/players.gd" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://211ykua1ah5n" path="res://models/chest_gold/chest_gold.glb" id="2_0wfyh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -73,7 +74,7 @@ operation = 2
 size = Vector3(0.24523926, 0.943573, 1)
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1316522105]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.68670154, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.051430345, 0)
 script = ExtResource("1_o5qli")
 move_speed = 4.0
 
@@ -93,3 +94,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.89134073, -0.37639606)
 unique_name_in_owner = true
 transform = Transform3D(-1, 1.7763568e-15, -8.742278e-08, -2.262668e-08, 0.9659259, 0.25881907, 8.444392e-08, 0.25881907, -0.9659258, -0.05003786, 0.6282785, -1.5710956)
 fov = 77.8
+
+[node name="chest_gold2" parent="." unique_id=1099664650 instance=ExtResource("2_0wfyh")]
+transform = Transform3D(-2.1855694e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -2.1855694e-08, 3.1797168, 2.3841858e-07, 0.79967046)
