@@ -1,4 +1,5 @@
 extends CharacterBody3D
+
 #Primeiramente fazemos exports para mudar a sensibilidade do mouse fora do codigo
 @export_group("Camera")
 @export_range(0.0, 1.0) var mouse_sensibilidade := 0.25
@@ -17,6 +18,7 @@ var _gravity := 30.0
 var camera_input_direcao: = Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
+	%interact_text.hide()
 	if event.is_action_pressed("left_click"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	#basicamente se a pessoa clicar com botao esquerdo na tela do jogo, ele ira capturar o mouse
@@ -24,7 +26,6 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# ja isso aq serve para caso a pessoa aperte ESC o mouse se torne visivel
-
 
 
 #a funcao unhandled serve pra pegar os inputs do mouse
@@ -61,13 +62,27 @@ func _physics_process(delta: float) -> void:
 	
 	
 	var velocity_y := velocity.y
-	velocity_y = 0.0
+	
 	velocity = velocity.move_toward(move_direcao * move_speed, aceleracao * delta)
-	velocity.y = velocity_y + _gravity * delta
+	velocity.y = velocity_y - _gravity * delta
+	velocity_y = 0.0
 	
 	var pulando := Input.is_action_just_pressed("pular") and is_on_floor()
 	if pulando:
 		velocity.y += forca_pulo
 	
-	#print(pulando)
+
 	move_and_slide()
+	
+	
+	%interact_text.hide()
+	if %RayCast3D.is_colliding():
+		var target = %RayCast3D.get_collider().get_parent().get_parent()
+		if target.has_method("interact"):
+			target.interact()
+			%interact_text.show()
+			if Input.is_action_pressed("interagir"):
+				#var _ponto_colisao = %mao.global_transform.origin()
+				#%pedra.global_transform.origin = _ponto_colisao
+				#%pedra.global_transform.basis = %mao.global_transform.basis
+			

@@ -83,10 +83,7 @@ size = Vector3(0.24523926, 0.943573, 1)
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1316522105]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.051430345, 0)
 script = ExtResource("1_o5qli")
-mouse_sensibilidade = null
 move_speed = 4.0
-aceleracao = null
-forca_pulo = 20
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player" unique_id=1118893455]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.6772681, -0.34851503)
@@ -112,9 +109,19 @@ transform = Transform3D(-1, -1.9311305e-07, -2.2626685e-08, -7.5330875e-15, -0.5
 [node name="SA_hand" type="SpringArm3D" parent="Player/CameraPivot/Camera3D" unique_id=277698510]
 unique_name_in_owner = true
 transform = Transform3D(1, 4.3711392e-08, 1.6313312e-07, -4.371141e-08, -0.86602545, 0.5000001, 1.6313317e-07, -0.5, -0.8660254, 1.4901161e-07, -0.34908462, -1.6979855)
-spring_length = -0.8
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraPivot" unique_id=158203438]
+[node name="pedra" type="Node3D" parent="Player/CameraPivot/Camera3D/SA_hand" unique_id=1055822746]
+script = ExtResource("3_jyhfs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CameraPivot/Camera3D/SA_hand/pedra" unique_id=98943390]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.30574572, 3.8943572)
+material_override = ExtResource("4_jyhfs")
+mesh = SubResource("BoxMesh_o5qli")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Player/CameraPivot/Camera3D/SA_hand/pedra/MeshInstance3D" unique_id=706555349]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/CameraPivot/Camera3D/SA_hand/pedra/MeshInstance3D/StaticBody3D" unique_id=287611101]
+shape = SubResource("ConvexPolygonShape3D_0wfyh")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Player" unique_id=1899608117]
 
@@ -137,16 +144,10 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Pressione \"E\" Para Pegar o Item"
 
-[node name="mao" type="Marker3D" parent="Player" unique_id=628218130]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7615266, 0.12318802)
-
 [node name="items" type="Node3D" parent="." unique_id=966084520]
-unique_name_in_owner = true
 script = ExtResource("2_sugp2")
 
 [node name="pedra" type="Node3D" parent="items" unique_id=1299886575]
-unique_name_in_owner = true
 script = ExtResource("3_jyhfs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="items/pedra" unique_id=1157378252]
