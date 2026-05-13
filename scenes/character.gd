@@ -8,6 +8,7 @@ extends Node3D
 @export var move_speed := 8.0
 @export var aceleracao := 20.0
 @onready var camera: Camera3D = %Camera3D
+var velocity: Vector3 = Vector3.ZERO
 
 #dps pegamos a variavel da camera pivot (uma "linha" invisivel que vai da cabeca do personagem ate a camera)
 @onready var camera_pivot: Node3D = %CameraPivot
@@ -58,4 +59,5 @@ func _physics_process(delta: float) -> void:
 	#como a camera geralmente esta a cima do personagem, ele pode tentar entrar no chao, ent eh sempre bom zerar o Y 
 	move_direcao.y = 0.0
 	move_direcao = move_direcao.normalized()
-	velocity = velocity.move_toward(move_direcao)
+	velocity =velocity.move_toward(move_direcao * move_speed, aceleracao * delta)
+	move_and_slide()

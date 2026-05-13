@@ -1,12 +1,13 @@
-extends Node3D
+extends CharacterBody3D
 #Primeiramente fazemos exports para mudar a sensibilidade do mouse fora do codigo
 @export_group("Camera")
 @export_range(0.0, 1.0) var mouse_sensibilidade := 0.25
-
+var _gravity := 30.0
 #Movimentacao do Personagem
 @export_group("Movimentação")
 @export var move_speed := 8.0
 @export var aceleracao := 20.0
+@export var forca_pulo := 5
 @onready var camera: Camera3D = %Camera3D
 
 #dps pegamos a variavel da camera pivot (uma "linha" invisivel que vai da cabeca do personagem ate a camera)
@@ -54,8 +55,19 @@ func _physics_process(delta: float) -> void:
 	var para_direita := camera.global_basis.x
 	
 	var move_direcao := para_frente * input_puro.y + para_direita * input_puro.x
-	input_puro.x
 	#como a camera geralmente esta a cima do personagem, ele pode tentar entrar no chao, ent eh sempre bom zerar o Y 
 	move_direcao.y = 0.0
 	move_direcao = move_direcao.normalized()
-	velocity = velocity.move_toward(move_direcao)
+	
+	
+	var velocity_y := velocity.y
+	velocity_y = 0.0
+	velocity = velocity.move_toward(move_direcao * move_speed, aceleracao * delta)
+	velocity.y = velocity_y + _gravity * delta
+	
+	var pulando := Input.is_action_just_pressed("pular") and is_on_floor()
+	if pulando:
+		velocity.y += forca_pulo
+	
+	#print(pulando)
+	move_and_slide()
