@@ -10,6 +10,17 @@ var _gravity := 30.0
 @export var aceleracao := 20.0
 @export var forca_pulo := 5
 @onready var camera: Camera3D = %Camera3D
+#holding items
+@export_category("Holding Items")
+@export var arremesoForca = 7.5
+@export var followSpeed = 4.0
+@export var followDistance = 2
+@export var dropBelowPlayer = false
+@export var maxDinstanceFromCamera = 5.0
+@onready var groundRay = $GroundRayCast
+@onready var interactRay = $CameraPivot/Camera3D/RayCast3D
+@export var holdObject: RigidBody3D = null
+
 
 #dps pegamos a variavel da camera pivot (uma "linha" invisivel que vai da cabeca do personagem ate a camera)
 @onready var camera_pivot: Node3D = %CameraPivot
@@ -39,6 +50,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 #essa funcao ja serve para como se fosse um update da unity (atualiza a cada tick(eu acho))
 func _physics_process(delta: float) -> void:
+	handle_holding_objects()
 	camera_pivot.rotation.x += camera_input_direcao.y * delta
 	
 	#clampamos a rotacao para nao rotacionarmos a camera demasiadamente
@@ -73,16 +85,42 @@ func _physics_process(delta: float) -> void:
 	
 
 	move_and_slide()
+
+func set_hold_items(body: RigidBody3D):
+	if body is RigidBody3D:
+		holdObject = body
+
+func drop_hold_objects():
+	holdObject = null
+
+func jogar_item():
+	var obj = holdObject
+	drop_hold_objects()
+	obj.apply_central_impulse(-camera.global_transform.basis.z * forca_pulo * 10)
+
+func handle_holding_objects():
+	if Input.is_action_just_pressed("drop"):
+		if holdObject != null: jogar_item()
 	
 	
-	%interact_text.hide()
-	if %RayCast3D.is_colliding():
-		var target = %RayCast3D.get_collider().get_parent().get_parent()
-		if target.has_method("interact"):
-			target.interact()
-			%interact_text.show()
-			if Input.is_action_pressed("interagir"):
-				#var _ponto_colisao = %mao.global_transform.origin()
-				#%pedra.global_transform.origin = _ponto_colisao
-				#%pedra.global_transform.basis = %mao.global_transform.basis
-			
+	if Input.is_action_just_pressed("interagir"):
+		if holdObject != null: jogar_item()
+		elif interactRay.is_colliding(): set_hold_items(interactRay.get_collider())
+		
+		
+	if holdObject != null: 
+		var targetPos = camera.global_transform.origin + (camera.global_position * Vector3(0,0, followDistance))
+		print("xd")
+		var itemPos = holdObject.global_transform.origin 
+		
+		var vel =  (itemPos - targetPos) * followSpeed
+		vel = vel.limit_length(8.0)
+		holdObject.linear_velocity = holdObject.linear_velocity.lerp(vel, 0.15)
+		
+		
+		if holdObject.global_position.distance_to(camera.global_position) > maxDinstanceFromCamera:
+			drop_hold_objects()
+		
+	
+		if dropBelowPlayer && groundRay.is_colliding():
+			if groundRay.get_collider() == holdObject: drop_hold_objects()
