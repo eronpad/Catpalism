@@ -14,13 +14,14 @@ var _gravity := 30.0
 @export_category("Holding Items")
 @export var arremesoForca = 7.5
 @export var followSpeed = 4.0
-@export var followDistance = 2
+@export var followDistance = 6
 @export var dropBelowPlayer = false
 @export var maxDinstanceFromCamera = 5.0
 @onready var groundRay = $GroundRayCast
 @onready var interactRay = $CameraPivot/Camera3D/RayCast3D
 @export var holdObject: RigidBody3D = null
 
+var debug_tick:int =0
 
 #dps pegamos a variavel da camera pivot (uma "linha" invisivel que vai da cabeca do personagem ate a camera)
 @onready var camera_pivot: Node3D = %CameraPivot
@@ -95,6 +96,7 @@ func drop_hold_objects():
 
 func jogar_item():
 	var obj = holdObject
+	print("objeto hold sendo jogado")
 	drop_hold_objects()
 	obj.apply_central_impulse(-camera.global_transform.basis.z * forca_pulo * 10)
 
@@ -104,22 +106,31 @@ func handle_holding_objects():
 	
 	
 	if Input.is_action_just_pressed("interagir"):
-		if holdObject != null: jogar_item()
-		elif interactRay.is_colliding(): set_hold_items(interactRay.get_collider())
+		if holdObject!=null: 
+			jogar_item()
+		elif interactRay.is_colliding(): 
+			set_hold_items(interactRay.get_collider())
+			print(interactRay.get_collider())
+			print("interagiu")
 		
 		
 	if holdObject != null: 
-		var targetPos = camera.global_transform.origin + (camera.global_position * Vector3(0,0, followDistance))
-		print("xd")
+		var targetPos = camera.global_transform.origin + (camera.global_position + Vector3(0,0, followDistance))
+		
+		#var targetPos = camera.global_transform.origin + (camera.global_transform.basis.z * followDistance)
+		debug_tick+=1
 		var itemPos = holdObject.global_transform.origin 
 		
-		var vel =  (itemPos - targetPos) * followSpeed
+		#var vel =  (itemPos - targetPos) * followSpeed
+		var vel =  (targetPos - itemPos) * followSpeed
+		
+		print("loop",debug_tick," camera.global_transform.origin",camera.global_transform.origin)
 		vel = vel.limit_length(8.0)
-		holdObject.linear_velocity = holdObject.linear_velocity.lerp(vel, 0.15)
+		holdObject.linear_velocity = holdObject.linear_velocity.lerp(vel, 0.05)
 		
 		
-		if holdObject.global_position.distance_to(camera.global_position) > maxDinstanceFromCamera:
-			drop_hold_objects()
+		#if holdObject.global_position.distance_to(camera.global_position) > maxDinstanceFromCamera:
+			#drop_hold_objects()
 		
 	
 		if dropBelowPlayer && groundRay.is_colliding():

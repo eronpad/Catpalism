@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://sfagcg10lgsy"]
 
 [ext_resource type="Script" uid="uid://catb58iklpjas" path="res://scenes/players.gd" id="1_o5qli"]
-[ext_resource type="Script" uid="uid://1ksypdqiypni" path="res://scenes/grabable.gd" id="2_sugp2"]
-[ext_resource type="Script" uid="uid://d0c1fvgb03dc0" path="res://scenes/pedra.gd" id="3_jyhfs"]
+[ext_resource type="Script" path="res://scenes/grabable.gd" id="2_sugp2"]
+[ext_resource type="Script" path="res://scenes/pedra.gd" id="3_jyhfs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
