@@ -115,9 +115,13 @@ func handle_holding_objects():
 		
 		
 	if holdObject != null: 
-		var targetPos = camera.global_transform.origin + (camera.global_position + Vector3(0,0, followDistance))
+		#var targetPos = camera.global_transform.origin + (camera.global_position + Vector3(0,0, followDistance))
+		var x_target = %Player.global_position.x-2*camera.global_position.x
+		var y_target = %Player.global_position.y-2*camera.global_position.y + 3
 		
-		#var targetPos = camera.global_transform.origin + (camera.global_transform.basis.z * followDistance)
+		var targetPos = camera.global_transform.origin + (Vector3(x_target,y_target,camera.global_position.z)+ Vector3(0,0, followDistance))
+		#var targetPos = camera.global_transform.origin + (Vector3(x_target,camera.global_position.y,camera.global_position.z)+ Vector3(0,0, followDistance))
+		
 		debug_tick+=1
 		var itemPos = holdObject.global_transform.origin 
 		
